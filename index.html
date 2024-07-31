@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+
+  <body class="bg-black">
+    <canvas id="canvas"></canvas>
+  </body>
+
+  <script type="module" src="./matrix.js"></script>
+  <script type="module">
+    import { Rock, Ship } from "./objects.js";
+    import { matrixDims } from "./matrix.js";
+    import { sleep } from "./utils.js";
+
+    const ship = new Ship();
+    ship.render();
+
+    function spawnRocks() {
+      const num = Math.floor(Math.random() * 10);
+      const x = Math.floor(Math.random() * matrixDims.width);
+      const rocks = Array(num).fill(null).map((_, index) => new Rock({position: [x + index * 20, 0]}).render()); 
+      setTimeout(spawnRocks, 1000);
+    }
+    spawnRocks();
+  </script>
+</html>
