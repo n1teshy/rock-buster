@@ -2,6 +2,9 @@ import { block, matrix, matrixDims, ctx } from "./matrix.js";
 import { sleep } from "./utils.js";
 import { UnimplementedMethodError } from "./errors.js";
 
+const explosionSound = new Audio("./explosion.wav");
+const shotSound = new Audio("./shot.mp3");
+
 class Renderable {
   constructor() {}
 
@@ -29,6 +32,7 @@ class Movable extends Renderable {
 
   destroy() {
     this.isDestroyed = true;
+    this.clear();
   }
 
   loop() {
@@ -91,7 +95,7 @@ export class Rock extends Movable {
       await new Promise((res) => {
         requestAnimationFrame(async () => {
           stepper.next();
-          await sleep(100);
+          await sleep(400);
           res();
         });
       });
@@ -144,7 +148,7 @@ class Missile extends Movable {
         Math.abs(rock.position[1] - this.position[1]) <
           block.HEIGHT
       ) {
-        rocks.push(rock);
+        rocks.push([i, j]);
       }
     }
     return rocks;
@@ -164,10 +168,12 @@ class Missile extends Movable {
       if (updatable) {
         const badRocks = this.getDestroyableRocks(IV, IH);
         if (badRocks.length > 0) {
-          for (const rock of badRocks) {
-            rock.destroy();
+          for (const [i, j] of badRocks) {
+            matrix[i][j].destroy();
+            matrix[i][j] = null;
           }
           this.destroy();
+          explosionSound.play();
           return
         }
         matrix[IV][IH] = this;
@@ -187,7 +193,7 @@ class Missile extends Movable {
       await new Promise((res) => {
         requestAnimationFrame(async () => {
           stepper.next();
-          await sleep(50);
+          await sleep(10);
           res();
         });
       });
@@ -290,6 +296,7 @@ export class Ship extends Movable {
       this.position[1] + -1 * block.HEIGHT,
     ];
     const missile = new Missile({ position: [x, y] });
+    shotSound.play();
     missile.render();
   }
 
