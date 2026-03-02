@@ -2,8 +2,8 @@ import { block, matrix, matrixDims, ctx } from "./matrix.js";
 import { sleep } from "./utils.js";
 import { UnimplementedMethodError } from "./errors.js";
 
-const explosionSound = new Audio("./explosion.wav");
-const shotSound = new Audio("./shot.mp3");
+const explosionSound = new Audio("./assets/sounds/explosion.wav");
+const shotSound = new Audio("./assets/sounds/shot.mp3");
 
 class Renderable {
   constructor() {}
@@ -145,8 +145,7 @@ class Missile extends Movable {
       }
       if (
         Math.abs(rock.position[0] - this.position[0]) < block.WIDTH ||
-        Math.abs(rock.position[1] - this.position[1]) <
-          block.HEIGHT
+        Math.abs(rock.position[1] - this.position[1]) < block.HEIGHT
       ) {
         rocks.push([i, j]);
       }
@@ -174,7 +173,7 @@ class Missile extends Movable {
           }
           this.destroy();
           explosionSound.play();
-          return
+          return;
         }
         matrix[IV][IH] = this;
       }
@@ -235,7 +234,7 @@ export class Ship extends Movable {
           [0, 1],
           [1, 1],
           [2, 1],
-        ]
+        ],
       );
     }
     return offsets;
@@ -250,7 +249,7 @@ export class Ship extends Movable {
         pX + block.WIDTH * oX,
         pY + block.HEIGHT * oY,
         block.WIDTH,
-        block.HEIGHT
+        block.HEIGHT,
       );
     }
   }
@@ -269,7 +268,7 @@ export class Ship extends Movable {
           [0, 1],
           [1, 1],
           [2, 1],
-        ]
+        ],
       );
     }
     return offsets;
@@ -285,7 +284,7 @@ export class Ship extends Movable {
         pX + block.WIDTH * oX,
         pY + block.HEIGHT * oY,
         block.WIDTH,
-        block.HEIGHT
+        block.HEIGHT,
       );
     }
   }
