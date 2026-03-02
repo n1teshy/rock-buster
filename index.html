@@ -30,7 +30,7 @@
     ship.render();
 
     function spawnRocks() {
-      const num = Math.floor(Math.random() * 10);
+      const num = Math.floor(Math.random() * 2);
       const x = Math.floor(Math.random() * matrixDims.width);
       const rocks = Array(num).fill(null).map((_, index) => new Rock({position: [x + index * 20, 0]}).render()); 
       setTimeout(spawnRocks, 1000);
